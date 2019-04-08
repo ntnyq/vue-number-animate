@@ -1,0 +1,31 @@
+.num-anime {
+  &__wrap {
+    position: relative;
+    font-size: 0;
+  }
+
+  &__inner {
+    display: inline-block;
+    height: 80px;
+    line-height: 80px;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 60px;
+    overflow: hidden;
+  }
+
+  &__num {
+    float: left;
+    margin: 0 .1em;
+  }
+
+  &__symbol {
+    float: left;
+    transform: translateY(0) !important;
+  }
+
+  &__span {
+    display: block;
+  }
+}

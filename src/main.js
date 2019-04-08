@@ -1,8 +1,46 @@
-import Vue from 'vue'
-import App from './App.vue'
+import NumberAnimateComponent from './NumberAnimate.vue'
 
-Vue.config.productionTip = false
+const NumberAnimatePlugin = {
+  get version () {
+    return process.env.VUE_APP_VERSION
+  },
 
-new Vue({
-  render: h => h(App)
-}).$mount('#app')
+  installed: false,
+
+  install (Vue, options) {
+    if (this.installed) return false
+
+    this.installed = true
+
+    Vue.component(NumberAnimateComponent.name, {
+      functional: true,
+
+      props: {
+        options: {
+          type: Object,
+          required: false,
+          default: () => ({})
+        }
+      },
+
+      render (h, { data, props }) {
+        return h(NumberAnimateComponent, {
+          ...data,
+          props: {
+            options: Object.assign({}, options, props.options)
+          }
+        })
+      }
+    })
+  },
+
+  NumberAnimateComponent
+}
+
+export { NumberAnimateComponent }
+
+export default NumberAnimatePlugin
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(NumberAnimatePlugin)
+}

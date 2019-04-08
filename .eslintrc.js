@@ -3,8 +3,8 @@ module.exports = {
   env: {
     node: true
   },
-  'extends': [
-    'plugin:vue/essential',
+  extends: [
+    'plugin:vue/strongly-recommended',
     '@vue/standard'
   ],
   rules: {

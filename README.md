@@ -1,29 +1,7 @@
 # vue-number-animate
 
-## Project setup
-```
-yarn install
-```
+> 基于 __Vue__ 的数字滚动插件
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+## Docs
 
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+WIP
