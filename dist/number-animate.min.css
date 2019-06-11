@@ -1,0 +1,8 @@
+/*!
+ * vue-number-animate - A Vuejs component which makes number animate
+ *
+ * @version v0.1.0
+ * @link https://github.com/ntnyq/vue-number-animate
+ * @license undefined
+ * @copyright 2018-2019 ntnyq
+ */.num-anime__wrap{position:relative;font-size:0}.num-anime__inner{display:inline-block;height:80px;line-height:80px;white-space:nowrap;vertical-align:middle;text-align:center;font-size:60px;overflow:hidden}.num-anime__num{float:left;margin:0 .1em}.num-anime__symbol{float:left;-webkit-transform:translateY(0)!important;transform:translateY(0)!important}.num-anime__span{display:block}

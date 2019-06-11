@@ -1,6 +1,3 @@
-/**
- *
- */
 export function noop () { }
 
 export function isNumber (val) {

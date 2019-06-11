@@ -17,13 +17,23 @@ const {
 module.exports = [
   {
     input: 'main.js',
-    output: 'number-animate.js',
+    output: 'number-animate.esm.js',
     format: 'es'
   },
   {
     input: 'main.js',
+    output: 'number-animate.cjs.js',
+    format: 'cjs'
+  },
+  {
+    input: 'main.js',
+    output: 'number-animate.js',
+    format: 'umd'
+  },
+  {
+    input: 'main.js',
     output: 'number-animate.min.js',
-    format: 'es'
+    format: 'umd'
   }
 ].map(opts => {
   const minify = /min\.js$/.test(opts.output)
@@ -35,6 +45,7 @@ module.exports = [
       file: pathDist(opts.output),
       format: opts.format,
       // dir: pathDist(),
+      exports: 'named',
       name: 'NumberAnimate',
       banner,
       globals: {
@@ -61,18 +72,25 @@ module.exports = [
       commonjs(),
       json(),
       vue(),
-      ...(opts.format !== 'es' ? [babel({
-        babelrc: false,
-        presets: ['@vue/app'],
-        runtimeHelpers: true,
-        extensions: ['.js', '.vue'],
-        exclude: [/\/core-js\//, /@babel\/runtime/]
-      })] : []),
-      ...(minify ? [terser({
-        output: {
-          comments: /^!/
-        }
-      })] : [])
+      ...(
+        opts.format !== 'es'
+          ? [babel({
+            babelrc: false,
+            presets: ['@vue/app'],
+            runtimeHelpers: true,
+            extensions: ['.js', '.vue'],
+            exclude: [/\/core-js\//, /@babel\/runtime/]
+          })]
+          : []),
+      ...(
+        minify
+          ? [terser({
+            output: {
+              comments: /^!/
+            }
+          })]
+          : []
+      )
     ]
   }
 
