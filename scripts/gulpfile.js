@@ -1,6 +1,6 @@
 const gulp = require('gulp')
 const rollup = require('rollup')
-const rimraf = require('rimraf')
+const fs = require('fs-extra')
 const through = require('through2')
 const sass = require('gulp-sass')
 const postcss = require('gulp-postcss')
@@ -10,19 +10,11 @@ const cssnano = require('cssnano')
 const autoprefixer = require('autoprefixer')
 
 const rollupConfig = require('./rollup.config')
-
 const {
   pathSrc,
   pathDist,
   banner
 } = require('./utils')
-
-gulp.task('clean', () => new Promise((resolve, reject) => {
-  rimraf(pathDist(), err => {
-    if (err) reject(err)
-    resolve()
-  })
-}))
 
 function makeRollupTask (config) {
   async function buildTask () {
@@ -31,25 +23,26 @@ function makeRollupTask (config) {
     return bundle.write(config.output)
   }
 
-  buildTask.displayName = `rollup:${config.output.file}`
+  const displaName = config.output.file.split('/').slice(-1)
+
+  buildTask.displayName = `rollup: ${displaName}`
 
   return buildTask
 }
 
-gulp.task('rollup', gulp.series(
-  gulp.parallel(
-    ...rollupConfig.map(makeRollupTask)
-  )
-))
+function clean () {
+  return fs.remove(pathDist())
+}
 
-gulp.task('style', () => {
+async function runRollup () {
+  await gulp.parallel(...rollupConfig.map(makeRollupTask))()
+}
+
+function style () {
   return (
     gulp
-      .src([
-        pathSrc('style.scss')
-        // require any css style you like
-      ])
-      .pipe(sass())
+      .src([pathSrc('style.scss')])
+      .pipe(sass({ outputStyle: 'expanded' }))
       .pipe(postcss([
         autoprefixer()
       ]))
@@ -66,12 +59,6 @@ gulp.task('style', () => {
       .pipe(rename('number-animate.min.css'))
       .pipe(gulp.dest(pathDist()))
   )
-})
+}
 
-gulp.task('default', gulp.series(
-  'clean',
-  gulp.parallel(
-    'rollup',
-    'style'
-  )
-))
+exports.build = gulp.series(clean, gulp.parallel(runRollup, style))

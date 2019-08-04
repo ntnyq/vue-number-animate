@@ -3,7 +3,7 @@
  *
  * @version v0.1.0
  * @link https://github.com/ntnyq/vue-number-animate
- * @license undefined
+ * @license MIT
  * @copyright 2018-2019 ntnyq
  */
 
@@ -353,7 +353,7 @@ var store = _global[SHARED] || (_global[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: _core.version,
-  mode: 'pure',
+  mode:  'pure' ,
   copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 });
@@ -388,7 +388,7 @@ var _wksExt = {
 
 var defineProperty = _objectDp.f;
 var _wksDefine = function (name) {
-  var $Symbol = _core.Symbol || (_core.Symbol = {});
+  var $Symbol = _core.Symbol || (_core.Symbol =  {} );
   if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: _wksExt.f(name) });
 };
 
@@ -1012,7 +1012,7 @@ var store = _global$1[SHARED] || (_global$1[SHARED] = {});
   return store[key] || (store[key] = value !== undefined ? value : {});
 })('versions', []).push({
   version: _core$1.version,
-  mode: 'global',
+  mode:  'global',
   copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 });
@@ -1402,7 +1402,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
       // Set @@toStringTag to native iterators
       _setToStringTag$1(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (typeof IteratorPrototype[ITERATOR] != 'function') _hide$1(IteratorPrototype, ITERATOR, returnThis);
+      if ( typeof IteratorPrototype[ITERATOR] != 'function') _hide$1(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -1411,7 +1411,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
     $default = function values() { return $native.call(this); };
   }
   // Define iterator
-  if (BUGGY || VALUES_BUG || !proto[ITERATOR]) {
+  if ( (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
     _hide$1(proto, ITERATOR, $default);
   }
   // Plug for library
@@ -1814,27 +1814,6 @@ if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
   proto$1.constructor = $Number;
   _redefine$1(_global$1, NUMBER, $Number);
 }
-
-// most Object methods by ES6 should accept primitives
-
-
-
-var _objectSap$1 = function (KEY, exec) {
-  var fn = (_core$1.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  _export$1(_export$1.S + _export$1.F * _fails$1(function () { fn(1); }), 'Object', exp);
-};
-
-// 19.1.2.14 Object.keys(O)
-
-
-
-_objectSap$1('keys', function () {
-  return function keys(it) {
-    return _objectKeys$1(_toObject$1(it));
-  };
-});
 
 var at = _stringAt(true);
 
@@ -2512,6 +2491,27 @@ _fixReWks('replace', 2, function (defined, REPLACE, $replace, maybeCallNative) {
       return capture === undefined ? '' : capture;
     });
   }
+});
+
+// most Object methods by ES6 should accept primitives
+
+
+
+var _objectSap$1 = function (KEY, exec) {
+  var fn = (_core$1.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  _export$1(_export$1.S + _export$1.F * _fails$1(function () { fn(1); }), 'Object', exp);
+};
+
+// 19.1.2.14 Object.keys(O)
+
+
+
+_objectSap$1('keys', function () {
+  return function keys(it) {
+    return _objectKeys$1(_toObject$1(it));
+  };
 });
 
 var TYPED = _uid$1('typed_array');
@@ -3594,7 +3594,7 @@ if (_fails$1(function () { return $toString.call({ source: 'a', flags: 'b' }) !=
 }
 
 /*
- * anime.js v3.0.1
+ * anime.js v3.1.0
  * (c) 2019 Julian Garnier
  * Released under the MIT license
  * animejs.com
@@ -3752,17 +3752,6 @@ function spring(string, duration) {
   }
 
   return duration ? solver : getDuration;
-} // Elastic easing adapted from jQueryUI http://api.jqueryui.com/easings/
-
-
-function elastic(amplitude, period) {
-  if (amplitude === void 0) amplitude = 1;
-  if (period === void 0) period = .5;
-  var a = minMax(amplitude, 1, 10);
-  var p = minMax(period, .1, 2);
-  return function (t) {
-    return t === 0 || t === 1 ? t : -a * Math.pow(2, 10 * (t - 1)) * Math.sin((t - 1 - p / (Math.PI * 2) * Math.asin(1 / a)) * (Math.PI * 2) / p);
-  };
 } // Basic steps easing implementation https://developer.mozilla.org/fr/docs/Web/CSS/transition-timing-function
 
 
@@ -3885,89 +3874,74 @@ var bezier = function () {
 }();
 
 var penner = function () {
-  var names = ['Quad', 'Cubic', 'Quart', 'Quint', 'Sine', 'Expo', 'Circ', 'Back', 'Elastic']; // Approximated Penner equations http://matthewlein.com/ceaser/
-
-  var curves = {
-    In: [[0.550, 0.085, 0.680, 0.530],
-    /* inQuad */
-    [0.550, 0.055, 0.675, 0.190],
-    /* inCubic */
-    [0.895, 0.030, 0.685, 0.220],
-    /* inQuart */
-    [0.755, 0.050, 0.855, 0.060],
-    /* inQuint */
-    [0.470, 0.000, 0.745, 0.715],
-    /* inSine */
-    [0.950, 0.050, 0.795, 0.035],
-    /* inExpo */
-    [0.600, 0.040, 0.980, 0.335],
-    /* inCirc */
-    [0.600, -0.280, 0.735, 0.045],
-    /* inBack */
-    elastic
-    /* inElastic */
-    ],
-    Out: [[0.250, 0.460, 0.450, 0.940],
-    /* outQuad */
-    [0.215, 0.610, 0.355, 1.000],
-    /* outCubic */
-    [0.165, 0.840, 0.440, 1.000],
-    /* outQuart */
-    [0.230, 1.000, 0.320, 1.000],
-    /* outQuint */
-    [0.390, 0.575, 0.565, 1.000],
-    /* outSine */
-    [0.190, 1.000, 0.220, 1.000],
-    /* outExpo */
-    [0.075, 0.820, 0.165, 1.000],
-    /* outCirc */
-    [0.175, 0.885, 0.320, 1.275],
-    /* outBack */
-    function (a, p) {
-      return function (t) {
-        return 1 - elastic(a, p)(1 - t);
-      };
-    }
-    /* outElastic */
-    ],
-    InOut: [[0.455, 0.030, 0.515, 0.955],
-    /* inOutQuad */
-    [0.645, 0.045, 0.355, 1.000],
-    /* inOutCubic */
-    [0.770, 0.000, 0.175, 1.000],
-    /* inOutQuart */
-    [0.860, 0.000, 0.070, 1.000],
-    /* inOutQuint */
-    [0.445, 0.050, 0.550, 0.950],
-    /* inOutSine */
-    [1.000, 0.000, 0.000, 1.000],
-    /* inOutExpo */
-    [0.785, 0.135, 0.150, 0.860],
-    /* inOutCirc */
-    [0.680, -0.550, 0.265, 1.550],
-    /* inOutBack */
-    function (a, p) {
-      return function (t) {
-        return t < .5 ? elastic(a, p)(t * 2) / 2 : 1 - elastic(a, p)(t * -2 + 2) / 2;
-      };
-    }
-    /* inOutElastic */
-    ]
-  };
+  // Based on jQuery UI's implemenation of easing equations from Robert Penner (http://www.robertpenner.com/easing)
   var eases = {
-    linear: [0.250, 0.250, 0.750, 0.750]
+    linear: function linear() {
+      return function (t) {
+        return t;
+      };
+    }
   };
+  var functionEasings = {
+    Sine: function Sine() {
+      return function (t) {
+        return 1 - Math.cos(t * Math.PI / 2);
+      };
+    },
+    Circ: function Circ() {
+      return function (t) {
+        return 1 - Math.sqrt(1 - t * t);
+      };
+    },
+    Back: function Back() {
+      return function (t) {
+        return t * t * (3 * t - 2);
+      };
+    },
+    Bounce: function Bounce() {
+      return function (t) {
+        var pow2,
+            b = 4;
 
-  var loop = function loop(coords) {
-    curves[coords].forEach(function (ease, i) {
-      eases['ease' + coords + names[i]] = ease;
-    });
+        while (t < ((pow2 = Math.pow(2, --b)) - 1) / 11) {}
+
+        return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow((pow2 * 3 - 2) / 22 - t, 2);
+      };
+    },
+    Elastic: function Elastic(amplitude, period) {
+      if (amplitude === void 0) amplitude = 1;
+      if (period === void 0) period = .5;
+      var a = minMax(amplitude, 1, 10);
+      var p = minMax(period, .1, 2);
+      return function (t) {
+        return t === 0 || t === 1 ? t : -a * Math.pow(2, 10 * (t - 1)) * Math.sin((t - 1 - p / (Math.PI * 2) * Math.asin(1 / a)) * (Math.PI * 2) / p);
+      };
+    }
   };
+  var baseEasings = ['Quad', 'Cubic', 'Quart', 'Quint', 'Expo'];
+  baseEasings.forEach(function (name, i) {
+    functionEasings[name] = function () {
+      return function (t) {
+        return Math.pow(t, i + 2);
+      };
+    };
+  });
+  Object.keys(functionEasings).forEach(function (name) {
+    var easeIn = functionEasings[name];
+    eases['easeIn' + name] = easeIn;
 
-  for (var coords in curves) {
-    loop(coords);
-  }
+    eases['easeOut' + name] = function (a, b) {
+      return function (t) {
+        return 1 - easeIn(a, b)(1 - t);
+      };
+    };
 
+    eases['easeInOut' + name] = function (a, b) {
+      return function (t) {
+        return t < 0.5 ? easeIn(a, b)(t * 2) / 2 : 1 - easeIn(a, b)(t * -2 + 2) / 2;
+      };
+    };
+  });
   return eases;
 }();
 
@@ -3991,7 +3965,7 @@ function parseEasings(easing, duration) {
       return applyArguments(steps, args);
 
     default:
-      return is$2.fnc(ease) ? applyArguments(ease, args) : applyArguments(bezier, ease);
+      return applyArguments(ease, args);
   }
 } // Strings
 
@@ -4163,10 +4137,10 @@ function colorToRgb(val) {
 
 
 function getUnit(val) {
-  var split = /([\+\-]?[0-9#\.]+)(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
+  var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
 
   if (split) {
-    return split[2];
+    return split[1];
   }
 }
 
@@ -4318,9 +4292,18 @@ function validateValue(val, unit) {
     return colorToRgb(val);
   }
 
+  if (/\s/g.test(val)) {
+    return val;
+  }
+
   var originalUnit = getUnit(val);
   var unitLess = originalUnit ? val.substr(0, val.length - originalUnit.length) : val;
-  return unit && !/\s/g.test(val) ? unitLess + unit : unitLess;
+
+  if (unit) {
+    return unitLess + unit;
+  }
+
+  return unitLess;
 } // getTotalLength() equivalent for circle, rect, polyline, polygon and line shapes
 // adapted from https://gist.github.com/SebLambla/3e0550c496c236709744
 
@@ -4405,11 +4388,11 @@ function getParentSvgEl(el) {
   var parentEl = el.parentNode;
 
   while (is$2.svg(parentEl)) {
-    parentEl = parentEl.parentNode;
-
     if (!is$2.svg(parentEl.parentNode)) {
       break;
     }
+
+    parentEl = parentEl.parentNode;
   }
 
   return parentEl;
@@ -4472,7 +4455,10 @@ function getPathProgress(path, progress) {
 
 
 function decomposeValue(val, unit) {
-  var rgx = /-?\d*\.?\d+/g;
+  // const rgx = /-?\d*\.?\d+/g; // handles basic numbers
+  // const rgx = /[+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g; // handles exponents notation
+  var rgx = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g; // handles exponents notation
+
   var value = validateValue(is$2.pth(val) ? val.totalLength : val, unit) + '';
   return {
     original: value,
@@ -4828,7 +4814,7 @@ function handleVisibilityChange() {
       return ins.pause();
     });
     pausedInstances = activeInstances.slice(0);
-    activeInstances = [];
+    anime.running = activeInstances = [];
   } else {
     pausedInstances.forEach(function (ins) {
       return ins.play();
@@ -4883,7 +4869,7 @@ function anime(params) {
     lastTime = adjustTime(instance.currentTime) * (1 / anime.speed);
   }
 
-  function seekCild(time, child) {
+  function seekChild(time, child) {
     if (child) {
       child.seek(time - child.timelineOffset);
     }
@@ -4892,11 +4878,11 @@ function anime(params) {
   function syncInstanceChildren(time) {
     if (!instance.reversePlayback) {
       for (var i = 0; i < childrenLength; i++) {
-        seekCild(time, children[i]);
+        seekChild(time, children[i]);
       }
     } else {
       for (var i$1 = childrenLength; i$1--;) {
-        seekCild(time, children[i$1]);
+        seekChild(time, children[i$1]);
       }
     }
   }
@@ -5003,6 +4989,10 @@ function anime(params) {
     if (!instance.began && instance.currentTime > 0) {
       instance.began = true;
       setCallback('begin');
+    }
+
+    if (!instance.loopBegan && instance.currentTime > 0) {
+      instance.loopBegan = true;
       setCallback('loopBegin');
     }
 
@@ -5041,15 +5031,7 @@ function anime(params) {
       lastTime = 0;
       countIteration();
 
-      if (instance.remaining) {
-        startTime = now;
-        setCallback('loopComplete');
-        setCallback('loopBegin');
-
-        if (instance.direction === 'alternate') {
-          toggleInstanceDirection();
-        }
-      } else {
+      if (!instance.remaining) {
         instance.paused = true;
 
         if (!instance.completed) {
@@ -5062,6 +5044,14 @@ function anime(params) {
             promise = makePromise(instance);
           }
         }
+      } else {
+        startTime = now;
+        setCallback('loopComplete');
+        instance.loopBegan = false;
+
+        if (instance.direction === 'alternate') {
+          toggleInstanceDirection();
+        }
       }
     }
   }
@@ -5073,6 +5063,7 @@ function anime(params) {
     instance.progress = 0;
     instance.paused = true;
     instance.began = false;
+    instance.loopBegan = false;
     instance.changeBegan = false;
     instance.completed = false;
     instance.changeCompleted = false;
@@ -5090,7 +5081,7 @@ function anime(params) {
       instance.remaining++;
     }
 
-    setAnimationsProgress(0);
+    setAnimationsProgress(instance.reversed ? instance.duration : 0);
   }; // Set Value helper
 
 
@@ -5315,7 +5306,7 @@ function timeline(params) {
   return tl;
 }
 
-anime.version = '3.0.1';
+anime.version = '3.1.0';
 anime.speed = 1;
 anime.running = activeInstances;
 anime.remove = removeTargets;

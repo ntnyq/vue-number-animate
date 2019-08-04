@@ -12,7 +12,6 @@ const {
   pathDist,
   banner
 } = require('./utils')
-// const { version } = pkg
 
 module.exports = [
   {
@@ -36,15 +35,12 @@ module.exports = [
     format: 'umd'
   }
 ].map(opts => {
-  const minify = /min\.js$/.test(opts.output)
-
+  const minify = Boolean(/min\.js$/.test(opts.output))
   const config = {
     input: pathSrc(opts.input),
-
     output: {
       file: pathDist(opts.output),
       format: opts.format,
-      // dir: pathDist(),
       exports: 'named',
       name: 'NumberAnimate',
       banner,
@@ -55,9 +51,9 @@ module.exports = [
 
     external: [
       'vue',
-      ...(opts.format === 'es' ? [
-        // dependencies no need builtIn
-      ] : [])
+      ...(opts.format === 'es'
+        ? []
+        : [])
     ],
 
     plugins: [
@@ -72,24 +68,20 @@ module.exports = [
       commonjs(),
       json(),
       vue(),
-      ...(
-        opts.format !== 'es'
-          ? [babel({
-            babelrc: false,
-            presets: ['@vue/app'],
-            runtimeHelpers: true,
-            extensions: ['.js', '.vue'],
-            exclude: [/\/core-js\//, /@babel\/runtime/]
-          })]
-          : []),
-      ...(
-        minify
-          ? [terser({
-            output: {
-              comments: /^!/
-            }
-          })]
-          : []
+      ...(opts.format !== 'es'
+        ? [babel({
+          babelrc: false,
+          presets: ['@vue/app'],
+          runtimeHelpers: true,
+          extensions: ['.js', '.vue'],
+          exclude: [/\/core-js\//, /@babel\/runtime/]
+        })]
+        : []),
+      ...(minify
+        ? [terser({
+          output: { comments: /^!/ }
+        })]
+        : []
       )
     ]
   }
