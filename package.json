@@ -1,6 +1,6 @@
 {
   "name": "vue-number-animate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "main": "dist/number-animate.cjs.js",
   "module": "dist/number-animate.esm.js",
